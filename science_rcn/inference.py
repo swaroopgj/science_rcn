@@ -291,7 +291,7 @@ class LoopyBPInference(object):
                 beliefs[var_j] - self.lat_messages[0, f], pert_radius)
         return new_lat_messages
 
-    def bwd_pass(self):
+    def bwd_pass(self, return_backtrace=False):
         """Perform max-product loopy BP inference and decode the max-marginals.
 
         Returns
@@ -309,7 +309,7 @@ class LoopyBPInference(object):
             LOG.debug("Lateral constraints not satisfied. Try increasing the "
                       "number of iterations.")
             score = -np.inf
-        return score
+        return score, backtrace_positions if return_backtrace else score
 
     def infer_pbp(self):
         """Parallel loopy BP message passing, modifying state of `lat_messages`.

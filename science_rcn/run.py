@@ -82,7 +82,9 @@ def run_experiment(data_dir='data/MNIST',
                             perturb_factor=perturb_factor)
     train_results = pool.map_async(train_partial, [d[0] for d in train_data]).get(9999999)
     all_model_factors = zip(*train_results)
-
+    import cPickle as pkl
+    with open(os.path.join(data_dir, 'trained_model'), 'w') as f:
+        pkl.dump(all_model_factors, f)
     LOG.info("Testing on {} images...".format(len(test_data)))
     test_partial = partial(test_image, model_factors=all_model_factors,
                            pool_shape=pool_shape)
